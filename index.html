@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 8 Wednesday & Thursday Practice Quiz</title>
+<style>
+    /* --- Color Variables --- */
+    :root {
+        /* Default: Dark Theme */
+        --bg-color: #2d343e; /* Dark background */
+        --container-bg: #3c424f; /* Slightly lighter container */
+        --text-color: #e8e6e3; /* Light text */
+        --question-text-color: #8ab4f8; /* Light blue for questions */
+        --lo-text-color: #b0c4de; /* Lighter blue for learning objective */
+        --border-color: #555; /* Darker borders */
+        --separator-color: #4a4f5a;
+        --label-bg: #454c5a;
+        --label-border: #6c757d;
+        --label-hover-bg: #525966;
+        --label-hover-border: #7a828a;
+        --button-bg: #8ab4f8;
+        --button-text: #202124;
+        --button-hover-bg: #a3c5f9;
+        --button-disabled-bg: #5f6368;
+        --feedback-correct-bg: #344e41;
+        --feedback-correct-text: #c7f9cc;
+        --feedback-correct-border: #52b788;
+        --feedback-incorrect-bg: #5e2129;
+        --feedback-incorrect-text: #f8d7da;
+        --feedback-incorrect-border: #a4133c;
+        --feedback-rationale-text: #adb5bd; /* Lighter gray for rationale */
+        --feedback-source-text: #c7d3e0;
+        --feedback-separator: #6c757d;
+        --radio-accent: #8ab4f8;
+    }
+
+    .light-theme {
+        --bg-color: #eef2f7;
+        --container-bg: #ffffff;
+        --text-color: #343a40;
+        --question-text-color: #0056b3;
+        --lo-text-color: #5a6e8a;
+        --border-color: #dee2e6;
+        --separator-color: #e9ecef;
+        --label-bg: #f8f9fa;
+        --label-border: #ced4da;
+        --label-hover-bg: #e2e6ea;
+        --label-hover-border: #adb5bd;
+        --button-bg: #007bff;
+        --button-text: white;
+        --button-hover-bg: #0056b3;
+        --button-disabled-bg: #6c757d;
+        --feedback-correct-bg: #d1e7dd;
+        --feedback-correct-text: #0f5132;
+        --feedback-correct-border: #badbcc;
+        --feedback-incorrect-bg: #f8d7da;
+        --feedback-incorrect-text: #842029;
+        --feedback-incorrect-border: #f5c2c7;
+        --feedback-rationale-text: #495057;
+        --feedback-source-text: #343a40;
+        --feedback-separator: #ccc;
+        --radio-accent: #007bff;
+    }
+
+    /* --- General Styles --- */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        line-height: 1.7;
+        margin: 0;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        padding-bottom: 40px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    #theme-toggle-button {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        padding: 8px 12px;
+        background-color: var(--button-bg);
+        color: var(--button-text);
+        border: 1px solid var(--label-border);
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9em;
+        z-index: 1000;
+         transition: background-color 0.3s, color 0.3s;
+    }
+     #theme-toggle-button:hover {
+         opacity: 0.8;
+     }
+
+
+    #quiz-container {
+        max-width: 900px;
+        margin: 80px auto 30px auto;
+        background: var(--container-bg);
+        padding: 25px 35px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-color);
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .question-block {
+        margin-bottom: 35px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid var(--separator-color);
+        transition: border-color 0.3s;
+    }
+
+    .question-block:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 5px;
+    }
+    
+    .learning-objective {
+        font-size: 0.85em;
+        font-style: italic;
+        color: var(--lo-text-color);
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px dashed var(--separator-color);
+    }
+
+    .question-text {
+        font-weight: 600;
+        font-size: 1.1em;
+        margin-bottom: 18px;
+        color: var(--question-text-color);
+        transition: color 0.3s;
+    }
+
+    .options label {
+        display: block;
+        margin-bottom: 12px;
+        cursor: pointer;
+        padding: 10px 15px;
+        border-radius: 6px;
+        border: 1px solid var(--label-border);
+        background-color: var(--label-bg);
+        transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+    }
+
+    .options label:hover {
+        background-color: var(--label-hover-bg);
+        border-color: var(--label-hover-border);
+    }
+
+    .options input[type="radio"]:checked+span {
+         font-weight: bold;
+         color: var(--question-text-color);
+    }
+    .options input[type="radio"] {
+        margin-right: 12px;
+        accent-color: var(--radio-accent);
+    }
+
+    .button-container {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .check-button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.95em;
+        transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+        background-color: var(--button-bg);
+        color: var(--button-text);
+    }
+
+    .check-button:hover {
+        opacity: 0.85;
+    }
+
+     .check-button:disabled {
+         background-color: var(--button-disabled-bg);
+         cursor: not-allowed;
+         opacity: 0.7;
+     }
+
+    .feedback {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 6px;
+        font-size: 0.95em;
+        display: none;
+        border: 1px solid transparent;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .feedback.correct {
+        background-color: var(--feedback-correct-bg);
+        color: var(--feedback-correct-text);
+        border-color: var(--feedback-correct-border);
+        display: block;
+    }
+
+    .feedback.incorrect {
+        background-color: var(--feedback-incorrect-bg);
+        color: var(--feedback-incorrect-text);
+        border-color: var(--feedback-incorrect-border);
+        display: block;
+    }
+
+    .feedback-status {
+         font-weight: bold;
+         font-size: 1.1em;
+         display: block;
+         margin-bottom: 8px;
+    }
+
+    .feedback-rationale {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--feedback-separator);
+        font-size: 0.9em;
+        color: var(--feedback-rationale-text);
+        transition: color 0.3s, border-color 0.3s;
+    }
+    
+    .feedback-source {
+        margin-top: 10px;
+        font-size: 0.85em;
+        font-style: italic;
+        color: var(--feedback-source-text);
+        background-color: rgba(0,0,0,0.1);
+        padding: 8px;
+        border-radius: 4px;
+    }
+
+    h1 {
+        text-align: center;
+        color: var(--question-text-color);
+        margin-top: 30px;
+        margin-bottom: 30px;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+</style>
+</head>
+<body>
+
+    <button id="theme-toggle-button">Toggle Theme</button>
+    <h1>Week 8 Wednesday & Thursday Practice Quiz</h1>
+
+    <div id="quiz-container">
+        <!-- Questions will be loaded here by JavaScript -->
+    </div>
+
+<script>
+    const quizData = [
+        // Miscellaneous Antibiotics LOs
+        {
+            learningObjective: "LO1 (Miscellaneous Antibiotics): Explain the mechanism of activity of non-β-lactam antimicrobials",
+            question: "A patient is being treated for a severe MRSA infection with vancomycin. This glycopeptide antibiotic inhibits cell wall synthesis by which of the following mechanisms?",
+            options: { A: "Inhibiting the 30S ribosomal subunit", B: "Binding to the D-Ala-D-Ala terminus of peptidoglycan precursors", C: "Creating pores in the cell membrane", D: "Inhibiting DNA gyrase", E: "Blocking the folic acid pathway" },
+            correctAnswer: "B",
+            rationale: "Vancomycin is a large, 'U' shaped molecule that physically binds to the D-alanyl-D-alanine terminus of the nascent peptidoglycan chain. This steric hindrance prevents the enzymes (transglycosylases and transpeptidases) from incorporating the new unit into the growing cell wall, thereby inhibiting cell wall synthesis.",
+            source: "'“U” shaped molecule allows for binding at the D-Ala – D-Ala site on the peptidoglycan linkage. Inhibits trans-glycosidation leading to cell lysis.' (Miscellaneous Antibiotics Slides, Slide 4)"
+        },
+        {
+            learningObjective: "LO1 (Miscellaneous Antibiotics): Explain the mechanism of activity of non-β-lactam antimicrobials",
+            question: "Daptomycin is effective against Gram-positive organisms, including VRE and MRSA. Its mechanism of action involves a calcium-dependent process that leads to rapid bactericidal activity. What is the final step in this process?",
+            options: { A: "Inhibition of protein synthesis", B: "Inhibition of DNA replication", C: "Inhibition of folic acid synthesis", D: "Formation of cation channels and membrane depolarization", E: "Blockade of peptidoglycan cross-linking" },
+            correctAnswer: "D",
+            rationale: "Daptomycin's lipid tail anchors into the bacterial cell membrane in a calcium-dependent manner. This insertion leads to the formation of channels that allow for a massive efflux of potassium ions. The resulting rapid depolarization of the cell membrane disrupts cellular processes and leads to cell death.",
+            source: "'Lipid tail anchors to cell membrane. Forms cation channels. Release of potassium leads to rapid depolarization.' (Miscellaneous Antibiotics Slides, Slide 6)"
+        },
+        {
+            learningObjective: "LO1 (Miscellaneous Antibiotics): Explain the mechanism of activity of non-β-lactam antimicrobials",
+            question: "A patient is treated with trimethoprim-sulfamethoxazole for a urinary tract infection. This drug combination works synergistically to inhibit which essential metabolic pathway in bacteria?",
+            options: { A: "Glycolysis", B: "The Krebs cycle", C: "Peptidoglycan synthesis", D: "Folic acid synthesis", E: "Protein synthesis" },
+            correctAnswer: "D",
+            rationale: "Sulfamethoxazole and trimethoprim are sequential inhibitors of the folic acid synthesis pathway. Sulfamethoxazole inhibits dihydropteroate synthase (DHPS), and trimethoprim inhibits dihydrofolate reductase (DHFR). Blocking this pathway prevents the synthesis of purines and pyrimidines, which are essential for DNA replication.",
+            source: "'Inhibits folic acid synthesis through inhibition of DHPS and DHFR.' (Miscellaneous Antibiotics Handout, Page 46)"
+        },
+        {
+            learningObjective: "LO2 (Miscellaneous Antibiotics): Identify adverse drug reactions associated with antimicrobials",
+            question: "A patient receiving vancomycin via rapid intravenous infusion develops flushing of the upper body, pruritus, and an erythematous rash on the face and neck. This reaction is most commonly known as:",
+            options: { A: "Stevens-Johnson syndrome", B: "Anaphylaxis", C: "Vancomycin-Infusion Syndrome", D: "Serum sickness", E: "A disulfiram-like reaction" },
+            correctAnswer: "C",
+            rationale: "Vancomycin-Infusion Syndrome, formerly known as 'red man syndrome,' is a rate-dependent infusion reaction caused by the direct degranulation of mast cells and basophils, leading to histamine release. It is not a true IgE-mediated allergy and can be managed by slowing the infusion rate and administering antihistamines.",
+            source: "'Vancomycin-Infusion Syndrome (related to rate of infusion).' (Miscellaneous Antibiotics Slides, Slide 5)"
+        },
+        {
+            learningObjective: "LO2 (Miscellaneous Antibiotics): Identify adverse drug reactions associated with antimicrobials",
+            question: "A patient on long-term daptomycin therapy for osteomyelitis should be monitored weekly with a specific lab test due to the risk of a particular adverse effect. Which lab test and corresponding adverse effect are correct?",
+            options: { A: "Complete blood count for bone marrow suppression", B: "Liver function tests for hepatotoxicity", C: "Serum creatinine for nephrotoxicity", D: "Creatine phosphokinase (CPK) for rhabdomyolysis", E: "Electrocardiogram for QTc prolongation" },
+            correctAnswer: "D",
+            rationale: "Daptomycin is associated with a risk of skeletal muscle toxicity, which can manifest as myalgia and, in severe cases, rhabdomyolysis. Regular monitoring of creatine phosphokinase (CPK) levels is recommended to detect muscle damage early.",
+            source: "'Adverse Effect Profile: Rhabdomyolysis (weekly CPK).' (Miscellaneous Antibiotics Slides, Slide 8)"
+        },
+        {
+            learningObjective: "LO2 (Miscellaneous Antibiotics): Identify adverse drug reactions associated with antimicrobials",
+            question: "Fluoroquinolones carry several black box warnings from the FDA due to the risk of serious, potentially irreversible adverse effects. Which of the following is a well-known black box warning associated with this class of antibiotics?",
+            options: { A: "Bone marrow suppression", B: "Nephrotoxicity", C: "Tendonitis and tendon rupture", D: "Ototoxicity", E: "Vancomycin-Infusion Syndrome" },
+            correctAnswer: "C",
+            rationale: "Fluoroquinolones are associated with an increased risk of tendonitis and tendon rupture, which can occur at any age but is more common in older patients, those on corticosteroids, and transplant recipients. This is a significant black box warning.",
+            source: "'Black Box Warnings: Tendonitis/tendon rupture.' (Miscellaneous Antibiotics Slides, Slide 15)"
+        },
+        {
+            learningObjective: "LO3 (Miscellaneous Antibiotics): Design an antimicrobial regimen for a patient based on risk factors and spectrum of activity",
+            question: "A 55-year-old man with a history of alcoholism presents with a community-acquired pneumonia. A sputum Gram stain shows Gram-positive cocci in chains. Which of the following non-beta-lactam antibiotics would be an inappropriate choice for monotherapy due to its lack of coverage for this pathogen?",
+            options: { A: "Vancomycin", B: "Daptomycin", C: "Linezolid", D: "Ceftriaxone", E: "Aztreonam" },
+            correctAnswer: "E",
+            rationale: "The Gram stain suggests Streptococcus pneumoniae. Aztreonam is a monobactam with a spectrum of activity limited to aerobic Gram-negative bacteria. It has no activity against Gram-positive organisms or anaerobes and would therefore be ineffective.",
+            source: "This question requires synthesis. The 'Beta-Lactam Allergy' slide (44) shows the structure of monobactams, and the 'Enzymatic Resistance' tables (e.g., slide 43) consistently show that agents like aztreonam lack coverage for Gram-positives like Streptococcus."
+        },
+        {
+            learningObjective: "LO3 (Miscellaneous Antibiotics): Design an antimicrobial regimen for a patient based on risk factors and spectrum of activity",
+            question: "A critically ill patient in the ICU develops a bloodstream infection with vancomycin-resistant Enterococcus faecium (VRE). Which of the following antibiotics has reliable activity against this pathogen?",
+            options: { A: "Vancomycin", B: "Nafcillin", C: "Ceftriaxone", D: "Ertapenem", E: "Daptomycin" },
+            correctAnswer: "E",
+            rationale: "Daptomycin has excellent activity against a broad range of Gram-positive organisms, including those that are resistant to other agents, such as MRSA and VRE (both E. faecalis and E. faecium). Vancomycin is ineffective by definition. Nafcillin and ceftriaxone do not cover enterococci.",
+            source: "'Spectrum of Activity: Gram-positive organisms... Enterococcus.' (Miscellaneous Antibiotics Slides, Slide 8)"
+        },
+        {
+            learningObjective: "LO3 (Miscellaneous Antibiotics): Design an antimicrobial regimen for a patient based on risk factors and spectrum of activity",
+            question: "A patient is being treated for a severe soft tissue infection caused by MRSA. The patient is clinically stable, able to eat, and has a functioning gastrointestinal tract. Which of the following represents an appropriate switch from IV to oral therapy for this condition?",
+            options: { A: "IV Vancomycin to oral Vancomycin", B: "IV Daptomycin to oral Daptomycin", C: "IV Ceftaroline to oral Cefpodoxime", D: "IV Vancomycin to oral Linezolid", E: "IV Tigecycline to oral Tigecycline" },
+            correctAnswer: "D",
+            rationale: "Linezolid has excellent oral bioavailability, meaning the oral and IV forms achieve similar blood levels. It also has an excellent spectrum of activity against MRSA. This makes it an ideal choice for sequential therapy (switching from IV to PO). Vancomycin and daptomycin have poor oral absorption and are not used orally for systemic infections. Tigecycline is IV only.",
+            source: "'#3. Bacteria do not care how antibiotics arrive - Use PO therapy when able.' (Miscellaneous Antibiotics Slides, Slide 17). The Linezolid summary table also indicates its broad Gram-positive spectrum including Staph spp. (Slide 39)."
+        },
+        // Foundations of Mycology & Antifungal Agents LOs (Corrected and Complete)
+        {
+            learningObjective: "LO1 (Mycology & Antifungals): List five differences between fungi & bacteria",
+            question: "A key difference between the cell membranes of fungi and bacteria is the primary sterol component. While bacteria generally lack sterols, the fungal cell membrane contains:",
+            options: { A: "Cholesterol", B: "Hopanoids", C: "Ergosterol", D: "Lipopolysaccharide", E: "Mycolic acid" },
+            correctAnswer: "C",
+            rationale: "The primary sterol in fungal cell membranes is ergosterol, which is a critical target for several classes of antifungal drugs. In contrast, human cell membranes contain cholesterol, and most bacterial membranes lack sterols entirely.",
+            source: "'cell membrane: sterols' for fungi vs 'cell membrane: no sterols' for bacteria. (Foundations of Mycology Slides, Slide 4)"
+        },
+        {
+            learningObjective: "LO1 (Mycology & Antifungals): List five differences between fungi & bacteria",
+            question: "Which of the following is a fundamental difference between fungal and bacterial cells regarding their cellular organization?",
+            options: { A: "Fungi have a cell wall, while bacteria do not.", B: "Fungi are prokaryotic, while bacteria are eukaryotic.", C: "Fungi have a true nucleus and membrane-bound organelles, while bacteria do not.", D: "Fungi possess 70S ribosomes, while bacteria have 80S ribosomes.", E: "Fungi reproduce only by binary fission." },
+            correctAnswer: "C",
+            rationale: "Fungi are eukaryotes, meaning they possess a membrane-bound nucleus containing their chromosomes, as well as organelles like mitochondria and an endoplasmic reticulum. Bacteria are prokaryotes and lack these complex internal structures.",
+            source: "'eukaryotic: mitochondria, ER' for fungi vs 'prokaryotic' for bacteria. (Foundations of Mycology Slides, Slide 4)"
+        },
+        {
+            learningObjective: "LO1 (Mycology & Antifungals): List five differences between fungi & bacteria",
+            question: "The cell wall of fungi is structurally distinct from the peptidoglycan-based cell wall of bacteria. A major structural polysaccharide found in the fungal cell wall, but not in bacteria, is:",
+            options: { A: "Cellulose", B: "Chitin", C: "Lipopolysaccharide", D: "Teichoic acid", E: "Hyaluronic acid" },
+            correctAnswer: "B",
+            rationale: "The fungal cell wall is a complex structure composed primarily of polysaccharides, including chitin, glucans, and mannoproteins. Chitin, a polymer of N-acetylglucosamine, provides structural rigidity and is a key component that distinguishes fungal cell walls from the peptidoglycan of bacterial cell walls.",
+            source: "'cell wall: glucans, chitin' for fungi vs 'cell wall: peptidoglycan' for bacteria. (Foundations of Mycology Slides, Slide 4)"
+        },
+        {
+            learningObjective: "LO2 (Mycology & Antifungals): Describe the various types of hyphae",
+            question: "A fungus is observed to have hyphae that are divided by cross-walls into distinct cellular compartments. What is the term for these cross-walls?",
+            options: { A: "Septa", B: "Spores", C: "Mycelium", D: "Conidia", E: "Buds" },
+            correctAnswer: "A",
+            rationale: "Hyphae, the filamentous structures of molds, can be either septate or aseptate (coenocytic). Septa are the cross-walls that divide the hyphae into individual cells.",
+            source: "'cross walls (septa) - not in all fungi.' (Foundations of Mycology Slides, Slide 8). The image on slide 9 explicitly labels 'septate hyphae'."
+        },
+        {
+            learningObjective: "LO2 (Mycology & Antifungals): Describe the various types of hyphae",
+            question: "A microscopic examination of a mold reveals long, branching filaments that lack internal cross-walls, appearing as a continuous cytoplasmic mass with multiple nuclei. This type of hypha is described as:",
+            options: { A: "Septate", B: "Pseudohyphae", C: "Dimorphic", D: "Coenocytic", E: "Dematiaceous" },
+            correctAnswer: "D",
+            rationale: "Coenocytic (or aseptate) hyphae lack septa, resulting in a multinucleate, continuous filament. This morphology is characteristic of certain groups of fungi, such as the Zygomycetes (e.g., Mucor).",
+            source: "The image on slide 9 explicitly labels 'coenocytic (aseptate) hyphae'."
+        },
+        {
+            learningObjective: "LO2 (Mycology & Antifungals): Describe the various types of hyphae",
+            question: "Some fungi, like Candida albicans, can form chains of elongated budding cells that fail to detach. While these structures resemble hyphae, they are constricted at their points of attachment. What are these structures called?",
+            options: { A: "True hyphae", B: "Mycelium", C: "Arthroconidia", D: "Spherules", E: "Pseudohyphae" },
+            correctAnswer: "E",
+            rationale: "Pseudohyphae are chains of budding yeast cells that have not fully separated. They are morphologically distinct from true hyphae, which are formed by apical extension and have parallel sides.",
+            source: "The image on slide 9 explicitly labels 'pseudohyphae'."
+        },
+        {
+            learningObjective: "LO3 (Mycology & Antifungals): Distinguish between sexual & asexual reproduction in fungi",
+            question: "Fungal reproduction that involves the fusion of two compatible nuclei followed by meiosis is known as:",
+            options: { A: "Asexual reproduction", B: "Binary fission", C: "Budding", D: "Sexual reproduction", E: "Fragmentation" },
+            correctAnswer: "D",
+            rationale: "Sexual reproduction in fungi is defined by the fusion of cytoplasm (plasmogamy) and then nuclei (karyogamy), leading to a diploid stage which then undergoes meiosis to produce genetically diverse spores.",
+            source: "The 'Life cycle' diagram shows the SEXUAL pathway involving Plasmogamy, Karyogamy, and Meiosis. (Foundations of Mycology Slides, Slide 11)"
+        },
+        {
+            learningObjective: "LO3 (Mycology & Antifungals): Distinguish between sexual & asexual reproduction in fungi",
+            question: "The production of conidia from the side or end of a hypha is a common form of which type of reproduction in fungi?",
+            options: { A: "Sexual reproduction", B: "Gametic fusion", C: "Asexual reproduction", D: "Meiosis", E: "Zygote formation" },
+            correctAnswer: "C",
+            rationale: "Asexual reproduction involves mitotic division and does not involve the fusion of nuclei. The formation of asexual spores, such as conidia, is a common method for fungi to rapidly produce a large number of genetically identical propagules.",
+            source: "The 'Life cycle' diagram shows the ASEXUAL REPRODUCTION pathway leading to spores under favorable conditions. (Foundations of Mycology Slides, Slide 11)"
+        },
+        {
+            learningObjective: "LO3 (Mycology & Antifungals): Distinguish between sexual & asexual reproduction in fungi",
+            question: "The primary advantage of sexual reproduction over asexual reproduction for a fungal population is:",
+            options: { A: "It is faster and produces more offspring.", B: "It requires less energy.", C: "It generates genetic variation.", D: "It does not require a partner.", E: "It results in genetically identical clones." },
+            correctAnswer: "C",
+            rationale: "Sexual reproduction involves meiosis and the recombination of genetic material from two parents, which creates new combinations of alleles. This genetic diversity is advantageous for the population's ability to adapt to changing environmental conditions, particularly unfavorable ones.",
+            source: "The 'Life cycle' diagram shows the sexual cycle occurring under 'unfavorable conditions,' implying an adaptive advantage. (Foundations of Mycology Slides, Slide 11)"
+        },
+        {
+            learningObjective: "LO4 (Mycology & Antifungals): Differentiate between sexual & asexual spores",
+            question: "Which of the following is an example of an asexual spore produced by fungi?",
+            options: { A: "Zygospore", B: "Ascospore", C: "Basidiospore", D: "Conidium", E: "Oospore" },
+            correctAnswer: "D",
+            rationale: "Conidia are asexual spores that are produced externally on a specialized hypha called a conidiophore. Zygospores, ascospores, and basidiospores are all types of sexual spores, formed after the fusion of nuclei.",
+            source: "The diagram on slide 21 explicitly labels 'conidia' as part of the asexual stage of Ascomycetes."
+        },
+        {
+            learningObjective: "LO4 (Mycology & Antifungals): Differentiate between sexual & asexual spores",
+            question: "Ascospores are characteristic sexual spores that are typically formed within a sac-like structure. What is this structure called?",
+            options: { A: "Sporangium", B: "Conidiophore", C: "Basidium", D: "Zygosporangium", E: "Ascus" },
+            correctAnswer: "E",
+            rationale: "The phylum Ascomycota is defined by the production of sexual spores (ascospores) inside a sac-like structure called an ascus.",
+            source: "The diagram on slide 22 explicitly labels the sac-like structure containing sexual spores as an 'ascus'."
+        },
+        {
+            learningObjective: "LO4 (Mycology & Antifungals): Differentiate between sexual & asexual spores",
+            question: "The primary difference in the genetic makeup of sexual spores versus asexual spores is that:",
+            options: { A: "Asexual spores are diploid, while sexual spores are haploid.", B: "Asexual spores are genetically identical to the parent, while sexual spores are genetically unique.", C: "Sexual spores are larger than asexual spores.", D: "Asexual spores are motile, while sexual spores are non-motile.", E: "Sexual spores are produced more rapidly than asexual spores." },
+            correctAnswer: "B",
+            rationale: "Asexual spores are the product of mitosis and are therefore clones of the parent fungus. Sexual spores are the product of meiosis and genetic recombination, resulting in offspring that are genetically different from both parents and from each other.",
+            source: "The life cycle diagram on slide 11 shows the Asexual cycle originating from a single haploid mycelium (clone), while the Sexual cycle involves the fusion of two different mating forms, leading to meiosis and genetic recombination."
+        },
+        {
+            learningObjective: "LO5 (Mycology & Antifungals): Classify important antifungals by mechanism of action",
+            question: "Which class of antifungal agents works by inhibiting the synthesis of β-(1,3)-D-glucan, an essential component of the fungal cell wall?",
+            options: { A: "Polyenes", B: "Azoles", C: "Echinocandins", D: "Flucytosine", E: "Terbinafine" },
+            correctAnswer: "C",
+            rationale: "Echinocandins are a class of antifungals that noncompetitively inhibit the enzyme β-(1,3)-D-glucan synthase. This disrupts the integrity of the fungal cell wall, leading to osmotic instability and cell death. This target is unique to fungi, providing a high degree of selectivity.",
+            source: "'Mechanism of Action: Inhibition of β-(1,3)-D-glucan synthesis.' (Antifungal Agents Slides, Slide 20)"
+        },
+        {
+            learningObjective: "LO5 (Mycology & Antifungals): Classify important antifungals by mechanism of action",
+            question: "The azole antifungal agents, such as fluconazole and voriconazole, interfere with the synthesis of a key component of the fungal cell membrane. What is the direct target of these drugs?",
+            options: { A: "Squalene epoxidase", B: "β-(1,3)-D-glucan synthase", C: "DNA polymerase", D: "14-α-demethylase (a cytochrome P450 enzyme)", E: "Chitin synthase" },
+            correctAnswer: "D",
+            rationale: "Azoles work by inhibiting 14-α-demethylase, a fungal cytochrome P450 enzyme. This enzyme is critical for converting lanosterol to ergosterol. The depletion of ergosterol and accumulation of toxic sterol precursors disrupts the structure and function of the fungal cell membrane.",
+            source: "'Ergosterol Synthesis' diagram shows Azoles inhibiting '14 α-demethylase'. (Antifungal Agents Slides, Slide 10)"
+        },
+        {
+            learningObjective: "LO5 (Mycology & Antifungals): Classify important antifungals by mechanism of action",
+            question: "Amphotericin B is a broad-spectrum polyene antifungal. Its mechanism of action involves binding to a specific molecule in the fungal cell membrane, leading to the formation of pores and subsequent leakage of intracellular contents. What is this target molecule?",
+            options: { A: "Cholesterol", B: "Ergosterol", C: "Peptidoglycan", D: "Chitin", E: "β-(1,3)-D-glucan" },
+            correctAnswer: "B",
+            rationale: "Amphotericin B has a higher affinity for ergosterol, the primary sterol in fungal cell membranes, than for cholesterol, the primary sterol in human cell membranes. It binds to ergosterol and forms pores or channels, which increases membrane permeability and leads to leakage of essential ions like potassium, resulting in cell death.",
+            source: "'Mechanism of Action: Binding to ergosterol in fungal cell membrane and creating membrane holes.' (Antifungal Agents Slides, Slide 29, Practice Question 3)"
+        },
+        {
+            learningObjective: "LO6 (Mycology & Antifungals): Provide the most significant toxic side effects of various classes of antifungals",
+            question: "A patient being treated with conventional amphotericin B develops a rising serum creatinine, hypokalemia, and hypomagnesemia. These findings are indicative of which major dose-limiting toxicity of this drug?",
+            options: { A: "Hepatotoxicity", B: "Bone marrow suppression", C: "Nephrotoxicity", D: "Neurotoxicity", E: "Cardiotoxicity" },
+            correctAnswer: "C",
+            rationale: "Nephrotoxicity is the most significant and common dose-limiting side effect of amphotericin B. It causes direct damage to distal tubular membranes, leading to electrolyte wasting (potassium, magnesium), and also causes constriction of the afferent renal arterioles, decreasing glomerular filtration.",
+            source: "'Amphotericin Side Effects' diagram points to both 'Nephrotoxicity' and 'Electrolyte wasting (K+, Mg++, Ca++)'. (Antifungal Agents Slides, Slide 6)"
+        },
+        {
+            learningObjective: "LO6 (Mycology & Antifungals): Provide the most significant toxic side effects of various classes of antifungals",
+            question: "A patient on long-term voriconazole therapy for aspergillosis complains of changes in color perception and seeing wavy lines. This is a well-known and common side effect of which azole antifungal?",
+            options: { A: "Fluconazole", B: "Itraconazole", C: "Posaconazole", D: "Voriconazole", E: "Isavuconazole" },
+            correctAnswer: "D",
+            rationale: "Transient visual disturbances, including blurred vision, photophobia, and altered color perception, are a very common and characteristic side effect of voriconazole, occurring in up to 30% of patients. Hallucinations can also occur.",
+            source: "'Pharmacological Considerations: Visual disturbances (color changes), Hallucinations.' (Antifungal Agents Slides, Slide 13)"
+        },
+        {
+            learningObjective: "LO6 (Mycology & Antifungals): Provide the most significant toxic side effects of various classes of antifungals",
+            question: "The azole class of antifungals is notorious for causing drug-drug interactions. This is primarily due to their effect on which of the following systems?",
+            options: { A: "Inhibition of the cytochrome P450 enzyme system", B: "Induction of renal clearance transporters", C: "Displacement of drugs from albumin", D: "Chelation with divalent cations in the gut", E: "Inhibition of P-glycoprotein" },
+            correctAnswer: "A",
+            rationale: "Azole antifungals are well-known inhibitors of the cytochrome P450 (CYP) enzyme system in the liver. By inhibiting these enzymes, they can decrease the metabolism of many other drugs, leading to increased plasma concentrations and potential toxicity.",
+            source: "'Class-wide Side Effects: Cytochrome P450 Inhibition.' (Antifungal Agents Slides, Slide 11)"
+        },
+        // Zoonoses LOs
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for Hantavirus infection.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A 25-year-old camper from the Four Corners region of the US develops an abrupt onset of fever, headache, and myalgias, followed a few days later by a sudden cough, severe dyspnea, and rapid progression to non-cardiogenic pulmonary edema. This biphasic illness is the classic presentation of:",
+            options: { A: "Hantavirus Pulmonary Syndrome (HPS)", B: "Hemorrhagic Fever with Renal Syndrome (HFRS)", C: "Q fever pneumonia", D: "Psittacosis", E: "Leptospirosis" },
+            correctAnswer: "A",
+            rationale: "Hantavirus Pulmonary Syndrome (HPS) is characterized by a prodromal febrile phase followed by the rapid onset of severe cardiopulmonary distress, including non-cardiogenic pulmonary edema and cardiogenic shock. It is associated with inhalation of aerosolized rodent excreta in the Americas.",
+            source: "'febrile phase: acute onset of ↑↑ T, ↓ BP, headache, nausea, myalgia... sudden onset of cough, dyspnea, tachycardia, ↓ BP.' and 'non-cardiogenic pulmonary edema, respiratory failure, cardiogenic shock (most deaths in first 24h).' (Zoonoses Slides, Slides 6 & 7)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with Hantavirus.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Infection with the Sin Nombre virus, causing Hantavirus Pulmonary Syndrome (HPS), is most commonly associated with which of the following risk factors in the 'Four Corners' region of the United States?",
+            options: { A: "Ingesting unpasteurized goat milk", B: "Receiving a tick bite", C: "Inhaling aerosolized deer mouse urine and feces", D: "Contact with infected parrots", E: "Swimming in contaminated freshwater" },
+            correctAnswer: "C",
+            rationale: "Hantaviruses are transmitted to humans through the inhalation of aerosolized virus particles from the saliva, urine, and feces of infected rodents. In the Four Corners region, the white-footed deer mouse is the primary reservoir.",
+            source: "'reservoir (white-footed mice)' and 'inhalation of viruses in saliva, urine, & feces.' (Zoonoses Slides, Slides 2 & 3)"
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of Hantavirus infection.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "The severe pulmonary edema and shock seen in Hantavirus Pulmonary Syndrome (HPS) are primarily a result of the virus infecting which cell type, leading to increased vascular permeability?",
+            options: { A: "Alveolar macrophages", B: "Hepatocytes", C: "Renal tubular cells", D: "Endothelial cells", E: "Neurons" },
+            correctAnswer: "D",
+            rationale: "The pathogenesis of Hantavirus infection involves the infection of endothelial cells in various organs, particularly the lungs. This leads to endothelial dysfunction, increased vascular leakage, and the resulting non-cardiogenic pulmonary edema.",
+            source: "'endothelial cells: lungs, kidneys, heart, liver, spleen.' The diagram shows vascular leakage as a central event. (Zoonoses Slides, Slide 4)"
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of Hantavirus infection.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "A patient presents with a clinical picture highly suggestive of Hantavirus Pulmonary Syndrome (HPS). In addition to characteristic chest x-ray findings, which laboratory abnormality is a key feature of the febrile phase?",
+            options: { A: "Marked leukocytosis", B: "Thrombocytopenia", C: "Normal platelet count", D: "Polycythemia", E: "Hypernatremia" },
+            correctAnswer: "B",
+            rationale: "Thrombocytopenia, along with the presence of immunoblasts on a peripheral smear, is a hallmark laboratory finding in the early stages of HPS and can be a clue to the diagnosis.",
+            source: "'febrile phase (↓ platelets).' (Zoonoses Slides, Slide 7) and 'Thrombocytopenia' is listed as a key event in pathogenesis (Slide 4)."
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for Hantavirus infection.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "What is the mainstay of treatment for a patient with Hantavirus Pulmonary Syndrome (HPS)?",
+            options: { A: "A 14-day course of doxycycline", B: "High-dose ribavirin", C: "Early recognition and aggressive supportive care in an ICU", D: "Administration of human immune globulin", E: "A 7-day course of ceftriaxone" },
+            correctAnswer: "C",
+            rationale: "There is no specific antiviral therapy proven to be effective for HPS. Management relies entirely on early diagnosis and aggressive supportive care in an intensive care unit (ICU), including careful fluid management and mechanical ventilation or ECMO for respiratory and cardiac support.",
+            source: "'Early recognition & supportive (ICU).' (Zoonoses Slides, Slide 8)"
+        },
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for Psittacosis.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A 50-year-old pet store owner presents with an abrupt onset of fever, chills, a severe headache, and a dry cough. Her sputum Gram stain shows many neutrophils but no organisms. This clinical picture is most consistent with:",
+            options: { A: "Brucellosis", B: "Leptospirosis", C: "Psittacosis", D: "Rocky Mountain Spotted Fever", E: "Hantavirus infection" },
+            correctAnswer: "C",
+            rationale: "Psittacosis typically presents as an 'atypical pneumonia' with systemic symptoms like fever and headache. The key diagnostic clue from the vignette is the sputum Gram stain showing inflammatory cells (polys) but no bacteria, which is characteristic of an intracellular pathogen like Chlamydophila psittaci.",
+            source: "'fever & chills, headache, dry cough, sore throat, diarrhea.' and 'sputum Gram stain: many polys, no organisms.' (Zoonoses Slides, Slide 12)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with Psittacosis.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Which of the following represents the highest occupational risk for acquiring Psittacosis?",
+            options: { A: "Working in a slaughterhouse", B: "Being a veterinarian or poultry farm worker", C: "Hiking in the southeastern United States", D: "Cleaning rodent-infested sheds", E: "Working in a dairy" },
+            correctAnswer: "B",
+            rationale: "Psittacosis is a zoonosis transmitted from birds. Therefore, occupations that involve close contact with birds, such as veterinarians, poultry farm workers, and pet store employees, carry the highest risk of infection.",
+            source: "The images on slide 11 depict 'poultry farm workers', 'veterinarians', 'pet store workers', and 'bird owners' as occupational hazards."
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of Psittacosis.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "The causative agent of psittacosis, Chlamydophila psittaci, has a unique developmental cycle within host cells. The small, infectious, metabolically inert form that is transmitted between hosts is known as the:",
+            options: { A: "Reticulate body", B: "Elementary body", C: "Spore", D: "Morula", E: "Cyst" },
+            correctAnswer: "B",
+            rationale: "The Chlamydia life cycle involves two forms. The elementary body is the small, dense, infectious form that survives extracellularly and enters host cells. Once inside, it transforms into the larger, metabolically active, non-infectious reticulate body, which replicates.",
+            source: "'elementary body (infectious form)' and 'reticulate body (replicative form).' (Zoonoses Slides, Slide 9)"
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of Psittacosis.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "The diagnosis of psittacosis is often challenging. In a patient with atypical pneumonia and a relevant exposure history, which of the following is a key diagnostic clue?",
+            options: { A: "A positive blood culture on standard media", B: "A sputum Gram stain showing Gram-negative coccobacilli", C: "A sputum Gram stain showing many neutrophils but no organisms", D: "Rapid antigen test on a throat swab", E: "The presence of a skin eschar" },
+            correctAnswer: "C",
+            rationale: "Because Chlamydophila psittaci is an obligate intracellular pathogen, it will not be visible on a standard Gram stain of sputum. The presence of an inflammatory response (many polys) without visible bacteria is a classic finding for atypical pneumonias, including psittacosis.",
+            source: "'sputum Gram stain: many polys, no organisms.' (Zoonoses Slides, Slide 12)"
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for Psittacosis.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "What is the antibiotic of choice for treating psittacosis?",
+            options: { A: "Penicillin", B: "Vancomycin", C: "Metronidazole", D: "Doxycycline", E: "Ciprofloxacin" },
+            correctAnswer: "D",
+            rationale: "Tetracyclines, particularly doxycycline, are the recommended treatment for infections caused by Chlamydophila psittaci. Azithromycin is an alternative, especially for children.",
+            source: "'doxycycline (10-14d)' and 'azithromycin (children).' (Zoonoses Slides, Slide 14)"
+        },
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for Brucellosis.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A 45-year-old man who works in a meat-packing plant presents with a 3-week history of fevers that spike in the evening, drenching night sweats, and profound fatigue. He notes that his sweat has an unusual, malodorous quality. This clinical syndrome is most characteristic of:",
+            options: { A: "Q fever", B: "Leptospirosis", C: "Brucellosis", D: "Psittacosis", E: "Ehrlichiosis" },
+            correctAnswer: "C",
+            rationale: "The constellation of prolonged, undulating fever, profuse sweating (which may be malodorous), and constitutional symptoms like fatigue and arthralgia in a patient with occupational exposure to livestock or animal products is classic for brucellosis.",
+            source: "'fever (universal)... relapsing (“undulant fever”)... sweats (malodorous perspiration--? pathognomonic).' (Zoonoses Slides, Slide 18)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with Brucellosis.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Which of the following is a major risk factor for acquiring brucellosis in humans?",
+            options: { A: "Inhaling aerosolized rodent excreta", B: "Being bitten by a tick", C: "Consuming unpasteurized dairy products", D: "Cleaning a bird cage", E: "A mosquito bite" },
+            correctAnswer: "C",
+            rationale: "Brucellosis is primarily transmitted from animals to humans through direct contact with infected animals, inhalation of infectious aerosols, or, most commonly worldwide, consumption of unpasteurized milk and other dairy products from infected animals like goats, sheep, and cows.",
+            source: "'Brucella enters: contact with infected animals, consuming infected animal-derived food (unpasteurized dairy products****)...' (Zoonoses Slides, Slide 17)"
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of Brucellosis.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "Brucella species are facultative intracellular pathogens that are able to survive and replicate within which host cell?",
+            options: { A: "Erythrocytes", B: "Epithelial cells", C: "Macrophages", D: "Hepatocytes", E: "Neurons" },
+            correctAnswer: "C",
+            rationale: "A key aspect of Brucella pathogenesis is its ability to be phagocytosed by macrophages and then inhibit phagolysosomal fusion. It creates a Brucella-containing vacuole (BCV) which eventually fuses with the endoplasmic reticulum, creating a niche for replication.",
+            source: "'macrophage, monocyte, dendritic cell, B cell.' and 'fusion of BCV, endosome, & endoplasmic reticulum (ER) → replication.' (Zoonoses Slides, Slide 17)"
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of Brucellosis.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "The definitive diagnosis of brucellosis relies on which of the following laboratory methods?",
+            options: { A: "Serology using a Rose-Bengal test", B: "Gram stain of peripheral blood", C: "Isolation of the organism from blood or bone marrow cultures", D: "PCR of a skin lesion biopsy", E: "Chest X-ray findings" },
+            correctAnswer: "C",
+            rationale: "While serology is a very useful and sensitive screening tool, the gold standard for diagnosing brucellosis is the isolation of the Brucella organism from a clinical specimen, most commonly blood or bone marrow.",
+            source: "'blood & bone marrow cultures' is listed as a diagnostic method. (Zoonoses Slides, Slide 21)"
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for Brucellosis.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "What is the standard, recommended antibiotic regimen for treating non-focal brucellosis in an adult?",
+            options: { A: "A single dose of ceftriaxone", B: "A 7-day course of azithromycin", C: "A 6-week course of doxycycline plus gentamicin for the first week", D: "A 10-day course of levofloxacin", E: "A 4-week course of rifampin monotherapy" },
+            correctAnswer: "C",
+            rationale: "Because Brucella is an intracellular pathogen, prolonged combination therapy is required to prevent relapse. The standard regimen for uncomplicated disease is a 6-week course of doxycycline, often with the addition of an aminoglycoside like gentamicin for the initial 1-2 weeks.",
+            source: "'doxycycline... non-focal disease (6 wks)' and 'gentamicin (1st wk only).' (Zoonoses Slides, Slide 22)"
+        },
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for Rocky Mountain Spotted Fever.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A hiker in North Carolina develops a fever, severe headache, and myalgias in early summer. Four days into the illness, a maculopapular rash appears on his wrists and ankles and begins to spread centrally. This classic rash progression is the hallmark of which disease?",
+            options: { A: "Ehrlichiosis", B: "Lyme disease", C: "Rocky Mountain Spotted Fever", D: "Anaplasmosis", E: "Q fever" },
+            correctAnswer: "C",
+            rationale: "Rocky Mountain Spotted Fever (RMSF) classically presents with a rash that begins on the extremities (wrists and ankles) and spreads centripetally to the trunk. The rash typically appears around day 4 of a febrile illness.",
+            source: "'(rash-- ≈ day 4)... wrists & ankles → trunk.' (Zoonoses Slides, Slide 28)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with Rocky Mountain Spotted Fever.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Rocky Mountain Spotted Fever is a tick-borne illness. In the Eastern United States, the primary vector responsible for transmitting Rickettsia rickettsii to humans is the:",
+            options: { A: "Lone Star tick (Amblyomma americanum)", B: "Blacklegged tick (Ixodes scapularis)", C: "American dog tick (Dermacentor variabilis)", D: "Brown dog tick (Rhipicephalus sanguineus)", E: "Wood tick (Dermacentor andersoni)" },
+            correctAnswer: "C",
+            rationale: "While several tick species can transmit RMSF, the American dog tick, Dermacentor variabilis, is the most common vector in the eastern and central parts of the U.S.",
+            source: "'Dermacentor variabilis (American dog tick) (most common vector—Eastern U.S.)' (Zoonoses Slides, Slide 25)"
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of Rocky Mountain Spotted Fever.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "The widespread rash, vasculitis, and multi-organ damage seen in severe Rocky Mountain Spotted Fever are a direct result of the invasion and replication of Rickettsia rickettsii within which specific cell type?",
+            options: { A: "Macrophages", B: "Neutrophils", C: "Hepatocytes", D: "Endothelial cells", E: "Erythrocytes" },
+            correctAnswer: "D",
+            rationale: "The primary pathogenetic event in RMSF is the infection of vascular endothelial cells. The bacteria replicate within these cells, causing cell injury and death, which leads to increased vascular permeability, vasculitis, and damage to all organ systems.",
+            source: "'R. rickettsii infects endothelial cells (capillaries, arterioles, venules of all organ systems).' (Zoonoses Slides, Slide 26)"
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of Rocky Mountain Spotted Fever.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "A physician highly suspects Rocky Mountain Spotted Fever in a patient based on clinical and epidemiological findings, but it is only day 3 of the illness. Which of the following is the most appropriate next step in management?",
+            options: { A: "Wait for the rash to appear before starting treatment.", B: "Wait for confirmatory serology results before starting treatment.", C: "Perform a skin biopsy for direct fluorescent antibody (DFA) testing and wait for the result.", D: "Start empiric treatment with doxycycline immediately without waiting for laboratory confirmation.", E: "Start empiric treatment with a beta-lactam antibiotic." },
+            correctAnswer: "D",
+            rationale: "RMSF can be rapidly fatal if treatment is delayed. The diagnosis is primarily clinical, as diagnostic tests like serology are often negative in the first week of illness. Therefore, treatment with doxycycline should be initiated immediately based on clinical suspicion alone to prevent severe morbidity and mortality.",
+            source: "'Primarily clinical: Severe febrile illness in Spring & Summer +/- rash → TREAT!!!' and 'sensitivity > 90% (often negative in 1st week).' (Zoonoses Slides, Slide 30)"
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for Rocky Mountain Spotted Fever.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "What is the drug of choice for treating Rocky Mountain Spotted Fever in both adults and children?",
+            options: { A: "Amoxicillin", B: "Ceftriaxone", C: "Azithromycin", D: "Doxycycline", E: "Ciprofloxacin" },
+            correctAnswer: "D",
+            rationale: "Doxycycline is the first-line and most effective treatment for RMSF for patients of all ages. Delaying treatment or using other antibiotics is associated with a higher risk of fatal outcome.",
+            source: "'RMSF: doxycycline 7d or for 2 days after T normal.' (Zoonoses Slides, Slide 33)"
+        },
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for human monocytic ehrlichiosis.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A patient presents with an acute febrile illness with headache and myalgias after a tick bite. Lab work shows leukopenia and thrombocytopenia. A rash is present in about one-third of cases. This clinical picture is most consistent with:",
+            options: { A: "Rocky Mountain Spotted Fever", B: "Lyme Disease", C: "Human monocytic ehrlichiosis", D: "Q fever", E: "Brucellosis" },
+            correctAnswer: "C",
+            rationale: "Human monocytic ehrlichiosis (HME) presents as a non-specific febrile illness. The key clinical clues are the laboratory abnormalities: leukopenia (low white blood cell count) and thrombocytopenia (low platelets), often accompanied by elevated liver transaminases.",
+            source: "'vasculitis rare, fever, headache, myalgias, abdominal pain, N & V, diarrhea, cough, rash in ≈ 1/3.' (Zoonoses Slides, Slide 32)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with human monocytic ehrlichiosis.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Human monocytic ehrlichiosis, caused by Ehrlichia chaffeensis, is transmitted by the bite of which tick, which is also the vector for RMSF in some areas?",
+            options: { A: "Blacklegged tick (Ixodes scapularis)", B: "American dog tick (Dermacentor variabilis)", C: "Brown dog tick (Rhipicephalus sanguineus)", D: "Lone Star tick (Amblyomma americanum)", E: "Wood tick (Dermacentor andersonii)" },
+            correctAnswer: "D",
+            rationale: "The primary vector for Ehrlichia chaffeensis is the Lone Star tick, Amblyomma americanum, which is prevalent in the southeastern and south-central United States.",
+            source: "While the specific tick is not named on the Zoonoses slides, it is associated with the same geographic distribution as RMSF, and the Lone Star tick is the known vector."
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of human monocytic ehrlichiosis.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "The pathogenesis of human monocytic ehrlichiosis involves the replication of Ehrlichia chaffeensis within the phagosomes of which target cells?",
+            options: { A: "Neutrophils", B: "Erythrocytes", C: "Monocytes and macrophages", D: "B lymphocytes", E: "Endothelial cells" },
+            correctAnswer: "C",
+            rationale: "As its name implies, human monocytic ehrlichiosis is caused by an organism that specifically targets and replicates within monocytes and macrophages, forming characteristic intracellular inclusions called morulae.",
+            source: "'targets monocytes & macrophages.' (Zoonoses Slides, Slide 32)"
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of human monocytic ehrlichiosis.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "A patient is suspected of having ehrlichiosis. While serology and PCR are definitive, a rapid presumptive diagnosis can sometimes be made by observing what characteristic finding on a peripheral blood smear?",
+            options: { A: "Spirochetes", B: "Intraerythrocytic rings", C: "Morulae within monocytes", D: "Atypical lymphocytes", E: "Intracellular Gram-negative diplococci" },
+            correctAnswer: "C",
+            rationale: "The pathognomonic finding for ehrlichiosis is the presence of morulae, which are intracytoplasmic, mulberry-like clusters of bacteria, within the target cell (monocytes for HME, granulocytes for HGA). However, this is not a sensitive finding.",
+            source: "The image on Slide 32 shows a monocyte containing a morula, which is the characteristic finding for Ehrlichia chaffeensis infection."
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for human monocytic ehrlichiosis.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "What is the recommended treatment for human monocytic ehrlichiosis?",
+            options: { A: "Doxycycline", B: "Penicillin", C: "Metronidazole", D: "Ceftriaxone", E: "Azithromycin" },
+            correctAnswer: "A",
+            rationale: "Doxycycline is the drug of choice for treating all rickettsial diseases, including ehrlichiosis and anaplasmosis, in both adults and children.",
+            source: "'Ehrlichiosis & Anaplasmosis: doxycycline 7-10d.' (Zoonoses Slides, Slide 33)"
+        },
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for human granulocytic anaplasmosis.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A patient presents with an acute febrile illness with fever, headache, and myalgias. Key laboratory findings include mild anemia, leukopenia, and thrombocytopenia. Compared to human monocytic ehrlichiosis, a rash is much less common (<10%) and GI symptoms are fewer. This description best fits:",
+            options: { A: "Rocky Mountain Spotted Fever", B: "Q fever", C: "Brucellosis", D: "Human granulocytic anaplasmosis", E: "Leptospirosis" },
+            correctAnswer: "D",
+            rationale: "Human granulocytic anaplasmosis (HGA) presents very similarly to HME but is generally distinguished by a lower frequency of rash and GI symptoms. The key laboratory findings of leukopenia and thrombocytopenia are shared.",
+            source: "'vasculitis rare, fever, headache, myalgia, fewer GI symptoms, rash in ≈ 10%, mild anemia, leukopenia, ↓ platelets ↑ bands.' (Zoonoses Slides, Slide 32)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with human granulocytic anaplasmosis.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Human granulocytic anaplasmosis is transmitted by the same tick vector responsible for Lyme disease and babesiosis. What is this tick?",
+            options: { A: "American dog tick (Dermacentor variabilis)", B: "Lone Star tick (Amblyomma americanum)", C: "Wood tick (Dermacentor andersoni)", D: "Blacklegged tick (Ixodes scapularis)", E: "Brown dog tick (Rhipicephalus sanguineus)" },
+            correctAnswer: "D",
+            rationale: "The blacklegged tick, Ixodes scapularis (or deer tick), is the vector for Anaplasma phagocytophilum in the northeastern and upper midwestern United States, the same regions where Lyme disease is endemic.",
+            source: "This is a core concept of tick-borne diseases, linking the epidemiology of anaplasmosis to that of Lyme disease."
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of human granulocytic anaplasmosis.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "The pathogenesis of human granulocytic anaplasmosis involves the replication of Anaplasma phagocytophilum within which host cells?",
+            options: { A: "Monocytes and macrophages", B: "Granulocytes (neutrophils)", C: "Erythrocytes", D: "Endothelial cells", E: "Hepatocytes" },
+            correctAnswer: "B",
+            rationale: "As its name indicates, human granulocytic anaplasmosis is caused by an organism that infects granulocytes, primarily neutrophils. The bacteria replicate within phagosomes, forming morulae.",
+            source: "'Anaplasma phagocytophilum (human granulocytic anaplasmosis).' The image on slide 31 points to a morula within a granulocyte.",
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of human granulocytic anaplasmosis.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "In addition to PCR and serology, a peripheral blood smear can be examined for a patient with suspected anaplasmosis. The presence of which finding would support the diagnosis?",
+            options: { A: "Spirochetes", B: "Intracellular yeast", C: "Atypical lymphocytes", D: "Morulae within granulocytes", E: "Schistocytes" },
+            correctAnswer: "D",
+            rationale: "The direct visualization of morulae (intracellular bacterial clusters) within neutrophils on a peripheral blood smear is a specific, though insensitive, method for diagnosing anaplasmosis.",
+            source: "The image on Slide 31 points to a morula within a granulocyte, which is the characteristic finding for Anaplasma phagocytophilum infection."
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for human granulocytic anaplasmosis.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "A 50-year-old man is diagnosed with human granulocytic anaplasmosis. What is the recommended first-line treatment?",
+            options: { A: "Ceftriaxone", B: "Doxycycline", C: "Rifampin", D: "Vancomycin", E: "Metronidazole" },
+            correctAnswer: "B",
+            rationale: "Doxycycline is the antibiotic of choice for treating anaplasmosis in all patients, as it is highly effective and delays in treatment can lead to severe complications.",
+            source: "'Ehrlichiosis & Anaplasmosis: doxycycline 7-10d.' (Zoonoses Slides, Slide 33)"
+        },
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for Q fever.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A 40-year-old sheep farmer presents with a two-week history of high fevers, a debilitating retro-orbital headache, and a non-productive cough. Labs show a normal WBC count but elevated liver transaminases. This presentation is most consistent with:",
+            options: { A: "Brucellosis", B: "Leptospirosis", C: "Acute Q fever", D: "Psittacosis", E: "Anaplasmosis" },
+            correctAnswer: "C",
+            rationale: "Acute Q fever often presents as a flu-like illness with high fever and a severe headache, or as an atypical pneumonia. The combination of pneumonia with associated hepatitis (elevated liver enzymes) and a normal WBC count is a very characteristic pattern for this disease.",
+            source: "'Acute Q fever (pneumonia–labs)... normal or low in pneumonia... ALT & AST ↑ in 30-60% (granulomatous hepatitis).' (Zoonoses Slides, Slide 39)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with Q fever.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Q fever, caused by Coxiella burnetii, is a zoonosis with a worldwide distribution. What is the primary mode of transmission to humans?",
+            options: { A: "Bite from an infected tick", B: "Ingestion of contaminated water", C: "Inhalation of infected aerosols from livestock", D: "Direct contact with rodent urine", E: "A mosquito bite" },
+            correctAnswer: "C",
+            rationale: "The main route of transmission for Q fever is the inhalation of contaminated aerosols. Infected livestock, particularly sheep, goats, and cattle, shed large numbers of the highly infectious organism in birth products, feces, and milk.",
+            source: "'infected aerosols in dust or infected materials.' (Zoonoses Slides, Slide 36)"
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of Q fever.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "Coxiella burnetii is an obligate intracellular bacterium that replicates within the host. It has a biphasic developmental cycle with a small-cell variant and a large-cell variant. Which of these is the infectious, non-replicating form?",
+            options: { A: "The large-cell variant", B: "The spore form", C: "The elementary body", D: "The small-cell variant", E: "The reticulate body" },
+            correctAnswer: "D",
+            rationale: "Coxiella burnetii has a developmental cycle with a small-cell variant (SCV) that is metabolically inactive, environmentally stable, and infectious, and a large-cell variant (LCV) that is metabolically active and replicative within the host cell phagolysosome.",
+            source: "'small-cell variant (non-replicating infectious form)' and 'large-cell variant (replicating form).' (Zoonoses Slides, Slide 35)"
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of Q fever.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "The diagnosis of chronic Q fever, particularly endocarditis, is supported by serologic testing. High titers of antibodies against which antigenic phase of Coxiella burnetii are indicative of chronic infection?",
+            options: { A: "Phase I", B: "Phase II", C: "Both Phase I and Phase II equally", D: "Neither, diagnosis is by culture only", E: "O antigen" },
+            correctAnswer: "A",
+            rationale: "In acute Q fever, antibodies against the Phase II antigen rise first. In chronic Q fever, high titers of IgG antibodies against the Phase I antigen (specifically ≥1:1600) are a major diagnostic criterion. The Phase I antigen is the complete, smooth LPS, while the Phase II antigen is a truncated, rough LPS.",
+            source: "'IgG1 > 1:1600' is shown pointing to an echocardiogram of endocarditis, indicating high-titer antibodies are key to diagnosis of chronic disease. (Zoonoses Slides, Slide 40)"
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for Q fever.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "A patient is diagnosed with chronic Q fever endocarditis. What is the recommended treatment for this serious condition?",
+            options: { A: "A 14-day course of doxycycline", B: "A 6-week course of rifampin", C: "Long-term (≥12 months) combination therapy with doxycycline and hydroxychloroquine", D: "A 10-day course of ceftriaxone", E: "Supportive care only" },
+            correctAnswer: "C",
+            rationale: "Chronic Q fever requires prolonged combination therapy to be effective. The standard regimen is at least 12-18 months of doxycycline combined with hydroxychloroquine. Hydroxychloroquine raises the pH of the phagolysosome, enhancing the activity of doxycycline against the intracellular bacteria.",
+            source: "'valvular heart disease: doxy + hydroxychloroquine x 12 mos.' (Zoonoses Slides, Slide 42)"
+        },
+        {
+            learningObjective: "LO1 (Zoonoses): Outline the clinical presentations for Leptospirosis.",
+            obfuscatedLO: "LO1 (Zoonoses): Outline the clinical presentations for the specified infections.",
+            question: "A patient who recently returned from a trip to Southeast Asia where they participated in whitewater rafting presents with a biphasic illness. The initial phase consisted of fever, myalgia, and headache. The second phase involves conjunctival suffusion (red eyes without exudate), jaundice, and evidence of acute kidney injury. This clinical syndrome is known as:",
+            options: { A: "Hemorrhagic Fever with Renal Syndrome", B: "Dengue fever", C: "Weil's disease", D: "Typhoid fever", E: "Malaria" },
+            correctAnswer: "C",
+            rationale: "Leptospirosis is often a biphasic illness. The severe, icteric form is known as Weil's disease and is characterized by the triad of jaundice, renal failure, and hemorrhage. Conjunctival suffusion is a classic physical finding.",
+            source: "'Weil’s disease (often biphasic: leptospiremic phase → immune phase with IgM Abs)... jaundice &/or conjunctival suffusion... acute kidney injury.' (Zoonoses Slides, Slide 47)"
+        },
+        {
+            learningObjective: "LO2 (Zoonoses): List the risk factors for infection with Leptospirosis.",
+            obfuscatedLO: "LO2 (Zoonoses): List the risk factors for the specified infections.",
+            question: "Leptospirosis is a zoonosis acquired through contact with water or soil that has been contaminated by what source?",
+            options: { A: "The feces of infected birds", B: "The respiratory droplets of infected sheep", C: "The urine of infected mammals, particularly rodents", D: "The saliva of infected bats", E: "The skin lesions of infected cattle" },
+            correctAnswer: "C",
+            rationale: "The primary reservoirs for Leptospira are wild and domestic mammals, especially rodents like rats. The organisms colonize the renal tubules and are shed in the urine, contaminating water and soil. Humans are infected through contact of abraded skin or mucous membranes with this contaminated environment.",
+            source: "'Rattus rattus (urine often contains Leptospira spp)' and 'contaminated food, soil, & water.' (Zoonoses Slides, Slide 44)"
+        },
+        {
+            learningObjective: "LO3 (Zoonoses): Summarize the pathogenesis of Leptospirosis.",
+            obfuscatedLO: "LO3 (Zoonoses): Summarize the pathogenesis of the specified infections.",
+            question: "The pathogenesis of leptospirosis begins with the invasion of the causative organism through defects in the skin or mucous membranes. The organism then disseminates hematogenously, causing widespread damage. What is the morphology of this highly motile organism?",
+            options: { A: "Gram-negative coccobacillus", B: "Gram-positive spore-forming rod", C: "Acid-fast bacillus", D: "Aerobic spirochete", E: "Intracellular diplococcus" },
+            correctAnswer: "D",
+            rationale: "Leptospira species are thin, highly motile, aerobic spirochetes. Their corkscrew-like motility allows them to penetrate tissues and move through the bloodstream to disseminate to various organs like the liver and kidneys.",
+            source: "'Leptospira spp (highly motile aerobic spirochete).' (Zoonoses Slides, Slide 43)"
+        },
+        {
+            learningObjective: "LO4 (Zoonoses): Provide the approach to diagnosis of Leptospirosis.",
+            obfuscatedLO: "LO4 (Zoonoses): Provide the approach to diagnosis of the specified infections.",
+            question: "The gold standard for the diagnosis of leptospirosis, although complex and not widely available, is which of the following tests?",
+            options: { A: "Culture of the organism on standard blood agar", B: "Darkfield microscopy of urine", C: "Microscopic agglutination test (MAT)", D: "PCR of whole blood", E: "Gram stain of a skin lesion" },
+            correctAnswer: "C",
+            rationale: "The microscopic agglutination test (MAT) is the serological gold standard. It involves mixing the patient's serum with live Leptospira serovars and observing for agglutination (clumping), indicating the presence of specific antibodies.",
+            source: "'microscopic agglut. test—gold standard (diluted serum mixed with live Leptospira clumping).' (Zoonoses Slides, Slide 48)"
+        },
+        {
+            learningObjective: "LO5 (Zoonoses): List the most important treatment options for Leptospirosis.",
+            obfuscatedLO: "LO5 (Zoonoses): List the most important treatment options for the specified infections.",
+            question: "A patient is hospitalized with severe leptospirosis (Weil's disease). Which of the following is the recommended antibiotic treatment?",
+            options: { A: "Oral doxycycline", B: "Oral azithromycin", C: "Intravenous penicillin G or ceftriaxone", D: "Intravenous vancomycin", E: "Oral rifampin" },
+            correctAnswer: "C",
+            rationale: "For severe leptospirosis requiring hospitalization, intravenous antibiotic therapy is indicated. IV penicillin G has historically been the drug of choice, with third-generation cephalosporins like ceftriaxone also being highly effective. Doxycycline is used for mild illness.",
+            source: "'severe illness-- x 7 days... IV PCN G... ceftriaxone.' (Zoonoses Slides, Slide 49)"
+        },
+        // Infections in Compromised Host (Non-AIDS) LOs
+        {
+            learningObjective: "LO1 (Infections in Compromised Host): Describe the pathogenesis of vascular access site infections and list the common organisms involved",
+            question: "A patient with a long-term tunneled central venous catheter develops a bloodstream infection. The pathogenesis of this infection most commonly begins with:",
+            options: { A: "Hematogenous seeding from a distant site", B: "Contamination of the infusate", C: "Migration of skin organisms along the external surface of the catheter", D: "Systemic immunosuppression from the patient's underlying disease", E: "Formation of a septic thrombus" },
+            correctAnswer: "C",
+            rationale: "The most common route for catheter-related bloodstream infections, especially for short-term and tunneled catheters, is the migration of microorganisms from the patient's skin at the insertion site along the catheter tract to the catheter tip.",
+            source: "This is a foundational concept of catheter-related infections, illustrated by the images showing exit site inflammation. The common organisms listed are skin commensals."
+        },
+        {
+            learningObjective: "LO1 (Infections in Compromised Host): Describe the pathogenesis of vascular access site infections and list the common organisms involved",
+            question: "Which group of organisms is statistically the most common cause of catheter-related bloodstream infections?",
+            options: { A: "Gram-negative bacilli", B: "Anaerobic bacteria", C: "Candida species", D: "Gram-positive cocci", E: "Mycobacteria" },
+            correctAnswer: "D",
+            rationale: "Gram-positive cocci, which are part of the normal skin flora, are the most frequent cause of catheter-related infections. Specifically, coagulase-negative staphylococci (like S. epidermidis) are the most common culprits, followed by S. aureus.",
+            source: "'Gram (+) cocci most common [especially coag (-) staph].' (Infections in Compromised Host Slides, Slide 5)"
+        },
+        {
+            learningObjective: "LO1 (Infections in Compromised Host): Describe the pathogenesis of vascular access site infections and list the common organisms involved",
+            question: "The ability of coagulase-negative staphylococci to cause catheter-related infections is greatly enhanced by their production of which virulence factor?",
+            options: { A: "Coagulase", B: "A potent exotoxin", C: "A thick peptidoglycan layer", D: "A biofilm or slime layer", E: "M protein" },
+            correctAnswer: "D",
+            rationale: "The primary virulence factor for coagulase-negative staphylococci in the context of device-related infections is their ability to produce an extracellular polysaccharide biofilm. This allows them to adhere strongly to the catheter material and protects them from host defenses and antibiotics.",
+            source: "This is a core concept linking the organism to the disease process, as biofilm is the key pathogenic mechanism for coagulase-negative staphylococci on foreign bodies."
+        },
+        {
+            learningObjective: "LO2 (Infections in Compromised Host): Provide a reasonable management strategy of vascular access site infections for common and problem organisms",
+            question: "A non-neutropenic, acutely ill patient has a tunneled catheter and blood cultures positive for Staphylococcus aureus. In addition to starting appropriate antibiotics (e.g., nafcillin or vancomycin), what is the most critical management step?",
+            options: { A: "Leave the catheter in and add an antibiotic lock", B: "Remove the catheter immediately", C: "Exchange the catheter over a guidewire", D: "Treat with oral antibiotics for 7 days", E: "Wait for susceptibility results before taking any action on the catheter" },
+            correctAnswer: "B",
+            rationale: "For catheter-related bloodstream infections caused by Staphylococcus aureus, immediate removal of the catheter is almost always indicated. Leaving the catheter in place is associated with a high risk of treatment failure, relapse, and metastatic complications like endocarditis or osteomyelitis.",
+            source: "'(+) blood cultures for S. aureus... Patient acutely ill... Remove catheter!' (Infections in Compromised Host Slides, Slide 12)"
+        },
+        {
+            learningObjective: "LO2 (Infections in Compromised Host): Provide a reasonable management strategy of vascular access site infections for common and problem organisms",
+            question: "A stable patient with difficult IV access has a tunneled catheter and blood cultures positive for coagulase-negative staphylococci. If a decision is made to attempt catheter salvage, what is the appropriate management strategy?",
+            options: { A: "A short course of oral antibiotics only", B: "Catheter removal followed by 48 hours of IV antibiotics", C: "A prolonged course of systemic IV antibiotics plus an antibiotic lock", D: "A single dose of IV vancomycin and catheter removal", E: "Observation without antibiotics" },
+            correctAnswer: "C",
+            rationale: "In cases of coagulase-negative staphylococcal catheter infection where the patient is not acutely ill and catheter removal is highly undesirable, a salvage attempt can be made. This requires a full course of systemic antibiotics (e.g., 10-14 days) combined with an 'antibiotic lock,' where a very high concentration of antibiotic is instilled into the catheter lumen to kill bacteria within the biofilm.",
+            source: "'57 yo woman in ICU... (+) blood cultures for coagulase-negative Staphylococcus Patient not acutely ill... Leave catheter in???... duration of Rx: 10-14d + antibiotic lock.' (Infections in Compromised Host Slides, Slide 9)"
+        },
+        {
+            learningObjective: "LO2 (Infections in Compromised Host): Provide a reasonable management strategy of vascular access site infections for common and problem organisms",
+            question: "A patient with a long-term catheter develops a bloodstream infection due to Candida albicans. What is the standard of care for managing this condition?",
+            options: { A: "Leave the catheter in and treat with IV fluconazole for 7 days", B: "Administer an antibiotic lock with amphotericin B", C: "Remove the catheter and administer an antifungal for 14 days after the last positive culture", D: "Treat with oral fluconazole only for 14 days", E: "Remove the catheter and observe without antifungal therapy" },
+            correctAnswer: "C",
+            rationale: "Catheter-related candidemia is a serious infection. Catheter removal is a critical component of management and is strongly recommended to improve outcomes and reduce the risk of metastatic complications. This is followed by a course of systemic antifungal therapy.",
+            source: "'remove catheter, echinocandin or fluconazole; duration: 14d after last (+) culture.' (Infections in Compromised Host Slides, Slide 13)"
+        },
+        {
+            learningObjective: "LO3 (Infections in Compromised Host): Outline the pathogenesis, diagnosis, and treatment of infected burn wounds",
+            question: "A patient with severe, full-thickness burns develops signs of sepsis. A quantitative culture of a burn wound biopsy is performed. A bacterial count exceeding what threshold is generally considered indicative of an invasive burn wound infection?",
+            options: { A: "10^2 bacteria/gram of tissue", B: "10^3 bacteria/gram of tissue", C: "10^4 bacteria/gram of tissue", D: "10^5 bacteria/gram of tissue", E: "Any growth is considered infection" },
+            correctAnswer: "D",
+            rationale: "Burn wounds are universally colonized by bacteria. To distinguish between colonization and invasive infection that requires systemic antibiotics, a quantitative biopsy is used. A density of >10^5 organisms per gram of tissue is the standard definition of a burn wound infection.",
+            source: "'> 10^5 bacteria/gm = infection.' (Infections in Compromised Host Slides, Slide 18)"
+        },
+        {
+            learningObjective: "LO3 (Infections in Compromised Host): Outline the pathogenesis, diagnosis, and treatment of infected burn wounds",
+            question: "Which two organisms are the most common and feared pathogens in deep partial- and full-thickness burn wound infections?",
+            options: { A: "Streptococcus pyogenes and Enterococcus faecalis", B: "Staphylococcus aureus (especially MRSA) and Pseudomonas aeruginosa", C: "Escherichia coli and Klebsiella pneumoniae", D: "Candida albicans and Aspergillus fumigatus", E: "Clostridium perfringens and Bacteroides fragilis" },
+            correctAnswer: "B",
+            rationale: "Staphylococcus aureus (increasingly MRSA) and Pseudomonas aeruginosa are the most common pathogens isolated from infected burn wounds. They are highly virulent in this setting and can lead to invasive infection and sepsis.",
+            source: "The slide explicitly labels images of 'most common (>50% MRSA)' and 'P. aeruginosa' as the most common pathogens. (Infections in Compromised Host Slides, Slide 18)"
+        },
+        {
+            learningObjective: "LO3 (Infections in Compromised Host): Outline the pathogenesis, diagnosis, and treatment of infected burn wounds",
+            question: "A patient with severe burns develops burn wound sepsis. In addition to aggressive fluid resuscitation and supportive care, what is the recommended empiric antibiotic regimen?",
+            options: { A: "Vancomycin only", B: "An anti-pseudomonal beta-lactam (e.g., meropenem) only", C: "An anti-pseudomonal beta-lactam plus vancomycin", D: "Topical antibiotics only", E: "Doxycycline and metronidazole" },
+            correctAnswer: "C",
+            rationale: "Empiric therapy for burn wound sepsis must cover the most likely pathogens. This requires a combination of an agent with robust activity against Pseudomonas aeruginosa and other Gram-negatives (like a carbapenem or cefepime) PLUS an agent with activity against MRSA (vancomycin).",
+            source: "'empirical Rx vs MRSA & GNRs: anti-Pseudomonal β-lactam (meropenem—best studied) + vancomycin.' (Infections in Compromised Host Slides, Slide 20)"
+        },
+        {
+            learningObjective: "LO4 (Infections in Compromised Host): Recognize common pathogens and disease presentations associated with hereditary and acquired defects in WBC function, CMI, Humoral immunity, and Splenic dysfunction",
+            question: "A 10-year-old boy with chronic granulomatous disease (CGD) develops pneumonia with a lung abscess. This disease involves a defect in NADPH oxidase, rendering phagocytes unable to produce a respiratory burst. Patients with CGD are particularly susceptible to infections with which type of organisms?",
+            options: { A: "Encapsulated bacteria", B: "Viruses", C: "Catalase-positive organisms", D: "Catalase-negative organisms", E: "Anaerobic bacteria" },
+            correctAnswer: "C",
+            rationale: "In CGD, phagocytes cannot produce reactive oxygen species (like H2O2). They can still kill catalase-negative organisms, which produce their own H2O2 that the phagocyte can use. However, catalase-positive organisms (like Staphylococcus aureus, Serratia, Aspergillus) can break down their own H2O2, allowing them to survive inside the defective phagocyte.",
+            source: "'defective NADPH oxidase... no respiratory burst... no O2 metabolites.' The slide shows images of catalase-positive organisms as the culprits. (Infections in Compromised Host Slides, Slide 28)"
+        },
+        {
+            learningObjective: "LO4 (Infections in Compromised Host): Recognize common pathogens and disease presentations associated with hereditary and acquired defects in WBC function, CMI, Humoral immunity, and Splenic dysfunction",
+            question: "A patient with multiple myeloma has a defect in producing functional immunoglobulins. This defect in humoral immunity puts the patient at a significantly increased risk of infections with which type of pathogen?",
+            options: { A: "Fungi", B: "Viruses", C: "Intracellular bacteria like Listeria", D: "Encapsulated bacteria like S. pneumoniae", E: "Parasites" },
+            correctAnswer: "D",
+            rationale: "The primary role of humoral immunity (antibodies) is to opsonize extracellular bacteria for phagocytosis, particularly encapsulated organisms. The polysaccharide capsule helps bacteria evade phagocytosis unless they are coated with specific antibodies. Patients with defective antibody production are therefore highly susceptible to infections with encapsulated bacteria like Streptococcus pneumoniae and Haemophilus influenzae.",
+            source: "'defective Ig' leads to infection with 'encapsulated bacteria' like 'S. pneumoniae' and 'H. influenzae'. (Infections in Compromised Host Slides, Slides 26 & 27)"
+        },
+        {
+            learningObjective: "LO4 (Infections in Compromised Host): Recognize common pathogens and disease presentations associated with hereditary and acquired defects in WBC function, CMI, Humoral immunity, and Splenic dysfunction",
+            question: "A 26-year-old woman with sickle cell disease, who is functionally asplenic, is brought to the ER with fever, confusion, and a diffuse purpuric rash. This fulminant presentation is most likely caused by an infection with which type of organism?",
+            options: { A: "A catalase-positive organism", B: "An intracellular pathogen", C: "A non-encapsulated bacterium", D: "An encapsulated bacterium", E: "A fungus" },
+            correctAnswer: "D",
+            rationale: "The spleen is a critical organ for clearing opsonized, encapsulated bacteria from the bloodstream. Asplenic patients are at extremely high risk for overwhelming sepsis from these organisms, including Streptococcus pneumoniae, Haemophilus influenzae, and Neisseria meningitidis. Purpura fulminans, as depicted, is a classic complication of meningococcemia.",
+            source: "'Compromised host (splenic dysfunction)... S. pneumoniae, H. influenzae, N. meningitidis... encapsulated bacteria.' (Infections in Compromised Host Slides, Slide 30)"
+        }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+    const themeToggleButton = document.getElementById('theme-toggle-button');
+    const bodyElement = document.body;
+
+    function applyTheme(theme) {
+        if (theme === 'light') {
+            bodyElement.classList.add('light-theme');
+            themeToggleButton.textContent = 'Switch to Dark Mode';
+        } else {
+            bodyElement.classList.remove('light-theme');
+            themeToggleButton.textContent = 'Switch to Light Mode';
+        }
+        localStorage.setItem('quizTheme', theme);
+    }
+
+    function loadQuiz() {
+        quizData.forEach((qData, index) => {
+            const questionBlock = document.createElement('div');
+            questionBlock.classList.add('question-block');
+            questionBlock.id = `q${index}`;
+
+            const loText = document.createElement('div');
+            loText.classList.add('learning-objective');
+            
+            // Store the full LO in a data attribute for later reveal
+            loText.dataset.fullLo = qData.learningObjective; 
+            
+            // Use the obfuscated version if it exists, otherwise use the full one
+            loText.innerHTML = qData.obfuscatedLO || qData.learningObjective; 
+            
+            questionBlock.appendChild(loText);
+
+            const questionText = document.createElement('p');
+            questionText.classList.add('question-text');
+            questionText.innerHTML = `${index + 1}. ${qData.question}`;
+            questionBlock.appendChild(questionText);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.classList.add('options');
+
+            for (const optionKey in qData.options) {
+                const optionId = `q${index}_${optionKey}`;
+                const label = document.createElement('label');
+                label.htmlFor = optionId;
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.name = `q${index}`;
+                radioInput.value = optionKey;
+                radioInput.id = optionId;
+                const labelText = document.createElement('span');
+                labelText.textContent = ` ${optionKey}. ${qData.options[optionKey]}`;
+                label.appendChild(radioInput);
+                label.appendChild(labelText);
+                optionsDiv.appendChild(label);
+            }
+            questionBlock.appendChild(optionsDiv);
+
+            const buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+
+            const checkButton = document.createElement('button');
+            checkButton.textContent = 'Check Answer';
+            checkButton.classList.add('check-button');
+            checkButton.onclick = () => checkAnswer(index);
+            buttonContainer.appendChild(checkButton);
+            
+            questionBlock.appendChild(buttonContainer);
+
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.classList.add('feedback');
+            questionBlock.appendChild(feedbackDiv);
+
+            quizContainer.appendChild(questionBlock);
+        });
+    }
+
+    function checkAnswer(questionIndex) {
+        const questionBlockElement = document.getElementById(`q${questionIndex}`);
+        const selectedRadioButton = questionBlockElement.querySelector('input[type="radio"]:checked');
+
+        if (!selectedRadioButton) {
+            alert("Please select an answer first.");
+            return;
+        }
+
+        const selectedOptionKey = selectedRadioButton.value;
+        const qData = quizData[questionIndex];
+        const feedbackDiv = questionBlockElement.querySelector('.feedback');
+        const correct = selectedOptionKey === qData.correctAnswer;
+        
+        const loTextElement = questionBlockElement.querySelector('.learning-objective');
+        
+        // Reveal the full learning objective from the data attribute
+        loTextElement.innerHTML = loTextElement.dataset.fullLo;
+
+        let feedbackHTML = '';
+
+        if (correct) {
+            feedbackHTML = `<span class="feedback-status">Correct!</span>`;
+            feedbackDiv.className = 'feedback correct';
+        } else {
+             feedbackHTML = `<span class="feedback-status">Incorrect. The correct answer is ${qData.correctAnswer}.</span>`;
+            feedbackDiv.className = 'feedback incorrect';
+        }
+
+        feedbackHTML += `<div class="feedback-rationale"><strong>Rationale:</strong> ${qData.rationale}</div>`;
+        feedbackHTML += `<div class="feedback-source"><strong>Source:</strong> ${qData.source}</div>`;
+        feedbackDiv.innerHTML = feedbackHTML;
+    }
+
+    themeToggleButton.addEventListener('click', () => {
+        if (bodyElement.classList.contains('light-theme')) {
+            applyTheme('dark');
+        } else {
+            applyTheme('light');
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTheme = localStorage.getItem('quizTheme') || 'dark';
+        applyTheme(savedTheme);
+        loadQuiz();
+    });
+
+</script>
+  
+</body>
+</html>
